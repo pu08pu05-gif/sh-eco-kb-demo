@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#152b56">
+<title>登录 - 朗臣生态环境资源管理系统</title>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<div class="login-wrap">
+  <!-- 左侧品牌区 -->
+  <section class="brand-panel">
+    <div class="brand-inner">
+      <div class="brand-logo">
+        <div class="logo-mark">LC</div>
+        <div class="logo-txt"><strong>朗臣生态</strong><span>环境资源管理系统</span></div>
+      </div>
+
+      <div class="brand-center">
+        <h1>朗臣生态环境<br>资源管理系统</h1>
+        <p class="brand-desc">汇聚生态环境资源 · 赋能科学决策与高效管理</p>
+        <div class="brand-stats">
+          <div class="bs-item"><strong id="st1">—</strong><span>开放获取条目</span></div>
+          <div class="bs-item"><strong id="st2">—</strong><span>现行有效法规标准</span></div>
+          <div class="bs-item"><strong id="st3">—</strong><span>板块数</span></div>
+        </div>
+      </div>
+
+      <div class="brand-footer">© 2026 朗臣生态环境资源管理系统 · 改进版原型</div>
+    </div>
+  </section>
+
+  <!-- 右侧表单区 -->
+  <main class="form-panel">
+    <div class="form-box">
+      <h2>欢迎登录</h2>
+      <p class="sub">请使用您的账号登录系统</p>
+
+      <form id="loginForm" autocomplete="off">
+        <div class="field">
+          <label for="username">用户名</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.6"/><path d="M4.5 20c0-3.6 3.4-5.6 7.5-5.6s7.5 2 7.5 5.6"/></svg>
+            <input type="text" id="username" placeholder="请输入用户名" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="password">密码</label>
+          <div class="input-wrap">
+            <svg viewBox="0 0 24 24"><rect x="4" y="10.5" width="16" height="9.5" rx="1.6"/><path d="M8 10.5V7.6a4 4 0 0 1 8 0v2.9"/></svg>
+            <input type="password" id="password" placeholder="请输入密码" autocomplete="off">
+            <button type="button" class="eye" id="eyeBtn" aria-label="显示密码">
+              <svg viewBox="0 0 24 24" style="width:17px;height:17px;stroke:#8a97ab;fill:none;stroke-width:1.8"><path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="captchaInput">验证码</label>
+          <div class="captcha-row">
+            <div class="input-wrap">
+              <svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2.5"/><path d="M8.5 12.2 11 14.7l4.8-5.2"/></svg>
+              <input type="text" id="captchaInput" placeholder="请输入验证码" maxlength="4">
+            </div>
+            <div class="captcha-img" id="captcha" title="点击刷新验证码"></div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox"><input type="checkbox" id="remember" checked><span>记住我</span></label>
+          <a href="#" class="forget">忘记密码？</a>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">登 录</button>
+        <div class="msg" id="msg"></div>
+      </form>
+
+      <div class="hint-accounts">
+        演示账号（密码任意填写，验证码照抄即可）：<br>
+        <code>admin</code> 管理员 · <code>super</code> 授权用户 · <code>user</code> 普通用户
+      </div>
+
+      <div class="form-foot">建议使用 Chrome / Edge / 手机浏览器访问本系统</div>
+    </div>
+  </main>
+</div>
+
+<script src="data/reg.js"></script>
+<script src="data/news.js"></script>
+<script src="data/frontier.js"></script>
+<script src="data/tech.js"></script>
+<script src="data/case.js"></script>
+<script src="data/expert.js"></script>
+<script src="data/achv.js"></script>
+<script src="data/data.js"></script>
+<script>
+(function(){
+  var D = window.DATA || {};
+  function n(a){ return (a||[]).length; }
+  var open = n(D.reg) + n(D.news) + n(D.frontier) + n(D.tech) + n(D.case) + n(D.expert);
+  var valid = (D.reg||[]).filter(function(x){ return x.status === '现行有效'; }).length;
+  document.getElementById('st1').textContent = open;
+  document.getElementById('st2').textContent = valid;
+  document.getElementById('st3').textContent = 8;
+
+  /* 验证码 */
+  var CH = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var CO = ['#2f7bff','#1f5fd0','#26a8b8','#d99425','#7a5cf0','#e05a6d'];
+  var el = document.getElementById('captcha'), code = '';
+  function refresh(){
+    el.innerHTML = ''; code = '';
+    for (var i = 0; i < 4; i++){
+      var ch = CH[Math.floor(Math.random()*CH.length)];
+      code += ch;
+      var s = document.createElement('span');
+      s.textContent = ch;
+      s.style.color = CO[Math.floor(Math.random()*CO.length)];
+      s.style.transform = 'rotate(' + (Math.random()*36-18).toFixed(1) + 'deg)';
+      el.appendChild(s);
+    }
+  }
+  refresh(); el.addEventListener('click', refresh);
+
+  var pwd = document.getElementById('password'), eye = document.getElementById('eyeBtn');
+  eye.addEventListener('click', function(){
+    var show = pwd.type === 'password';
+    pwd.type = show ? 'text' : 'password';
+    pwd.focus();
+  });
+
+  var cap = document.getElementById('captchaInput');
+  cap.addEventListener('input', function(){
+    cap.value = cap.value.toUpperCase().replace(/[^A-Z0-9]/g,'');
+  });
+
+  var form = document.getElementById('loginForm'), msg = document.getElementById('msg'),
+      btn = document.getElementById('loginBtn'), user = document.getElementById('username');
+  function show(t, k){ msg.className = 'msg' + (t ? ' show ' + (k||'') : ''); msg.textContent = t || ''; }
+
+  [user, pwd, cap].forEach(function(e){
+    e.addEventListener('input', function(){ if (msg.classList.contains('err')) show(''); });
+  });
+
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    var u = user.value.trim(), p = pwd.value, c = cap.value.trim();
+    if (!u) { show('请输入用户名','err'); user.focus(); return; }
+    if (!p) { show('请输入密码','err'); pwd.focus(); return; }
+    if (!c) { show('请输入验证码','err'); cap.focus(); return; }
+    if (c !== code) { refresh(); cap.value=''; show('验证码错误，请重新输入','err'); cap.focus(); return; }
+
+    var role = u === 'admin' ? 'admin' : (u === 'super' ? 'auth' : (u === 'user' ? 'normal' : ''));
+    if (!role) { show('用户名不存在','err'); refresh(); cap.value=''; return; }
+
+    try { localStorage.setItem('lc_role', role); } catch(err){}
+    show(''); btn.disabled = true; btn.textContent = '登录中...';
+    setTimeout(function(){
+      btn.textContent = '登录成功';
+      show('登录成功，正在进入系统...','ok');
+      setTimeout(function(){ location.href = 'index.html#/home'; }, 620);
+    }, 620);
+  });
+
+  window.addEventListener('load', function(){
+    if (window.innerWidth > 900) user.focus();
+  });
+})();
+</script>
+</body>
+</html>
