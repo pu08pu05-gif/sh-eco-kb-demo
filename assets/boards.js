@@ -208,18 +208,21 @@
     if (!pg.items.length) h += window.emptyBox();
     else {
       h += '<div class="tb-wrap"><table class="tb"><thead><tr>' +
-        '<th style="min-width:210px">技术名称</th><th>技术类型</th><th>技术领域</th>' +
-        '<th style="min-width:150px">适用场景</th><th style="min-width:200px">解决的难点问题</th>' +
-        '<th>持有单位</th><th></th></tr></thead><tbody>' +
+        '<th style="min-width:230px">技术名称</th><th style="min-width:150px">技术类型</th>' +
+        '<th style="min-width:280px">成果简介</th><th>环境要素</th><th>来源</th><th></th></tr></thead><tbody>' +
         pg.items.map(function (x) {
+          var brief = x.desc || x.practice || x.issue || '';
           return '<tr>' +
             '<td><div class="t-name" data-open="tech:' + esc(x.id) + '">' + esc(x.name) + '</div>' +
-            '<div style="font-size:11.5px;color:#8a97ab;margin-top:3px">' + esc(dstr(x.date)) + '</div></td>' +
-            '<td>' + (x.type ? '<span class="tag c">' + esc(x.type.slice(0, 12)) + '</span>' : '<span style="color:#b3bdcd">—</span>') + '</td>' +
-            '<td>' + (x.field ? esc(x.field.slice(0, 14)) : '<span style="color:#b3bdcd">—</span>') + '</td>' +
-            '<td style="font-size:12.5px;color:#43536b">' + esc((x.scene || '—').slice(0, 42)) + '</td>' +
-            '<td style="font-size:12.5px;color:#43536b">' + esc((x.issue || '—').slice(0, 56)) + '</td>' +
-            '<td style="font-size:12.5px">' + esc((x.owner || '—').slice(0, 20)) + '</td>' +
+            (x.date ? '<div style="font-size:11.5px;color:#8a97ab;margin-top:3px">入库 ' + esc(dstr(x.date)) + '</div>' : '') + '</td>' +
+            '<td>' + (x.type ? '<span class="tag c">' + esc(x.type.slice(0, 16)) + '</span>' : '<span style="color:#b3bdcd">—</span>') + '</td>' +
+            '<td style="font-size:12.5px;color:#43536b;line-height:1.6">' +
+            (brief ? esc(brief.slice(0, 108)) + (brief.length > 108 ? '…' : '') : '<span style="color:#b3bdcd">详见平台原文</span>') + '</td>' +
+            '<td><div style="display:flex;gap:5px;flex-wrap:wrap">' +
+            (x.tags || []).slice(0, 2).map(function (t) {
+              return '<span class="tag clickable" data-chip="tech|tag|' + esc(t) + '">' + esc(t) + '</span>';
+            }).join('') + '</div></td>' +
+            '<td style="font-size:11.5px;color:#8a97ab">' + esc(x.source.replace('国家生态环境科技成果转化综合服务平台', '国家科技成果转化平台').slice(0, 20)) + '</td>' +
             '<td><button class="btn sm" onclick="openDetail(\'tech\',\'' + esc(x.id) + '\')">详情</button></td>' +
             '</tr>';
         }).join('') + '</tbody></table></div>';
